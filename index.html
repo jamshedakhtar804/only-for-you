@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Only For You ❤️</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&family=Poppins:wght@300;400&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background: radial-gradient(circle at top, #fff0f5, #fdeff2);
+            font-family: 'Poppins', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .box {
+            background: white;
+            max-width: 430px;
+            width: 92%;
+            padding: 32px;
+            border-radius: 26px;
+            box-shadow: 0 30px 55px rgba(0,0,0,0.15);
+            text-align: center;
+            z-index: 5;
+            animation: fadeIn 1.2s ease;
+        }
+
+        h1 {
+            font-family: 'Playfair Display', serif;
+            margin-bottom: 12px;
+        }
+
+        p {
+            font-size: 15px;
+            line-height: 1.8;
+            color: #555;
+        }
+
+        button {
+            margin-top: 18px;
+            padding: 12px 28px;
+            border: none;
+            border-radius: 24px;
+            background: #c45a7a;
+            color: white;
+            font-size: 15px;
+            cursor: pointer;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            margin-top: 18px;
+            border-radius: 14px;
+            border: 1px solid #ccc;
+        }
+
+        .hidden { display: none; }
+
+        /* 🎈 Balloons */
+        .balloon {
+            position: absolute;
+            bottom: -80px;
+            font-size: 30px;
+            animation: floatUp linear infinite;
+            opacity: 0.9;
+            z-index: 1;
+        }
+
+        @keyframes floatUp {
+            from { transform: translateY(0); opacity: 0; }
+            10% { opacity: 1; }
+            to { transform: translateY(-120vh); opacity: 0; }
+        }
+
+        /* 🎆 Fireworks */
+        .firework {
+            position: absolute;
+            font-size: 22px;
+            animation: explode 1.5s ease-out forwards;
+            z-index: 0;
+        }
+
+        @keyframes explode {
+            0% { transform: scale(0.3); opacity: 1; }
+            70% { transform: scale(1.5); opacity: 1; }
+            100% { opacity: 0; }
+        }
+
+        /* 📝 Letter */
+        .letter {
+            text-align: left;
+            font-style: italic;
+            white-space: pre-line;
+            min-height: 160px;
+        }
+
+        /* 💍 Proposal */
+        .proposal {
+            font-size: 18px;
+            font-weight: 500;
+            color: #b64063;
+            margin-top: 20px;
+            animation: fadeIn 1.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+<!-- 🔐 LOCK SCREEN -->
+<div class="box" id="lock">
+    <h1>Only for you ❤️</h1>
+    <p>A small surprise, kept safe.<br>Just for us.</p>
+    <input type="password" id="pass" placeholder="Enter the secret 💌">
+    <button onclick="unlock()">Unlock</button>
+</div>
+
+<!-- 🎉 MAIN EXPERIENCE -->
+<div class="box hidden" id="main">
+    <h1>Happy Birthday, My Love 🎉</h1>
+    <div class="letter" id="letter"></div>
+    <button id="nextBtn" class="hidden" onclick="showProposal()">Continue 💖</button>
+</div>
+
+<!-- 💍 PROPOSAL SCREEN -->
+<div class="box hidden" id="proposal">
+    <h1>One last thing… 💍</h1>
+    <p class="proposal">
+        Every day with you feels like a promise already kept.<br><br>
+        Will you continue choosing me,<br>
+        just like I will always choose you?
+    </p>
+    <div style="font-size:28px;margin-top:10px;">❤️</div>
+</div>
+
+<script>
+    const correctPassword = "myLove15"; // change this
+    const birthday = new Date().getTime(); // change back to Feb 15 later
+
+    const letterText =
+        `My love,
+
+Some people walk into our lives quietly,
+and suddenly everything makes sense.
+
+You became my comfort,
+my laughter,
+my calm in chaos.
+
+Today is about celebrating you —
+but every day with you
+already feels like a gift.
+
+Always,
+Me ❤️`;
+
+    function unlock() {
+        if (document.getElementById("pass").value !== correctPassword) {
+            alert("Wrong password ❌");
+            return;
+        }
+
+        if (Date.now() < birthday) {
+            document.getElementById("lock").innerHTML =
+                "<h1>Almost there… 💫</h1><p>Come back on 15 February ❤️</p>";
+            return;
+        }
+
+        document.getElementById("lock").classList.add("hidden");
+        document.getElementById("main").classList.remove("hidden");
+
+        startBalloons();
+        startFireworks();
+        typeLetter();
+    }
+
+    function typeLetter() {
+        const el = document.getElementById("letter");
+        let i = 0;
+        const interval = setInterval(() => {
+            el.textContent += letterText[i];
+            i++;
+            if (i === letterText.length) {
+                clearInterval(interval);
+                document.getElementById("nextBtn").classList.remove("hidden");
+            }
+        }, 40);
+    }
+
+    function showProposal() {
+        document.getElementById("main").classList.add("hidden");
+        document.getElementById("proposal").classList.remove("hidden");
+    }
+
+    function startBalloons() {
+        setInterval(() => {
+            const b = document.createElement("div");
+            b.className = "balloon";
+            b.textContent = Math.random() > 0.7 ? "I ❤️ U" : "🎈";
+            b.style.left = Math.random() * 100 + "vw";
+            b.style.animationDuration = (6 + Math.random() * 6) + "s";
+            document.body.appendChild(b);
+            setTimeout(() => b.remove(), 12000);
+        }, 500);
+    }
+
+    function startFireworks() {
+        setInterval(() => {
+            const f = document.createElement("div");
+            f.className = "firework";
+            f.textContent = "🎆";
+            f.style.left = Math.random() * 100 + "vw";
+            f.style.top = Math.random() * 60 + "vh";
+            document.body.appendChild(f);
+            setTimeout(() => f.remove(), 1500);
+        }, 1200);
+    }
+</script>
+
+</body>
+</html>
